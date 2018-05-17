@@ -10,6 +10,7 @@ export default () => {
     <div>
       <Route exact path='/' component={Home} />
       <Route exact path='/summary' component={Summary} />
+      <Route exact path='/joke/:id' component={Home} />
     </div>
   </Router>
   ]

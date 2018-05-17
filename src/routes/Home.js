@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom';
-import { fetchJoke, rateJoke } from 'models/jokes'
+import Nav from 'components/navigation'
+import { fetchJoke, rateJoke, getJoke } from 'models/jokes'
 import logo from '../logo.svg'
 import '../App.css'
 
@@ -11,7 +11,13 @@ class Home extends Component {
     this.rateJoke = this.rateJoke.bind(this)
   }
   componentDidMount () {
-    this.props.fetchJoke()
+    const { match } = this.props
+    console.log(match.params)
+    if (match.params.id) {
+      this.props.getJoke(match.params.id)
+    } else {
+      this.props.fetchJoke()
+    }
   }
   rateJoke (e) {
     const { current } = this.props
@@ -21,23 +27,19 @@ class Home extends Component {
   }
   render () {
     const { current } = this.props
-    return (
+    return [
       <div className='App'>
-        <header className='App-header'>
-          <img src={logo} className='App-logo' alt='logo' />
-          <h1 className='App-title'>Welcome to React</h1>
-        </header>
+        <Nav />
         <div className='App-intro'>
-          <Link to='/summary'>Summary</Link>
           {current && <div>
             <p id={current.id}>{current.joke}</p>
             <button onClick={this.rateJoke} value='Funny'>Funny</button>
-            <button onClick={this.rateJoke} value='NotFunny'>Not Funny</button>
+            <button onClick={this.rateJoke} value='Not Funny'>Not Funny</button>
           </div>
           }
         </div>
       </div>
-    )
+    ]
   }
 }
 
@@ -48,7 +50,8 @@ const s = state => ({
 // d function
 const d = dispatch => ({
   fetchJoke: () => dispatch(fetchJoke()),
-  rateJoke: (payload) => dispatch(rateJoke(payload))
+  rateJoke: (payload) => dispatch(rateJoke(payload)),
+  getJoke: (payload) => dispatch(getJoke(payload))
 })
 
 export default connect(s, d)(Home)

@@ -41,12 +41,9 @@ const checkStatus = response => {
 const parseJson = response => response.json()
 
 const invokeService = ({ serviceId, requestData = {} }) => {
-  console.log('invokeService')
   const { endPoint, contentType, method } = Config[serviceId]
   let apiURL = endPoint
   const paramsType = (method === 'POST' && (contentType && (contentType.indexOf('json') > -1))) ? 'json' : 'form-data'
-  console.log('serviceName is ', endPoint)
-  console.log('requestData is ', requestData)
   const options = {
     method: method,
     headers: {
